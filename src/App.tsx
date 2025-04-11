@@ -13,6 +13,10 @@ function App() {
     sats: 0,
   });
   const [autoCenter, setAutoCenter] = useState(true);
+  const [mapUrl, setMapUrl] = useState(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  );
+  // http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png
 
   useEffect(() => {
     var port = null;
@@ -77,7 +81,7 @@ function App() {
           attribution={
             "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
           }
-          url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
+          url={mapUrl}
         ></TileLayer>
         <Recenter
           lat={data.lat}
@@ -111,7 +115,22 @@ function App() {
           our time)
         </p>
         <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
-
+        <button
+          className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
+          onClick={() => {
+            if (
+              mapUrl == "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ) {
+              setMapUrl(
+                "http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png"
+              );
+            } else {
+              setMapUrl("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
+            }
+          }}
+        >
+          Layer
+        </button>
         <label
           className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
           htmlFor="autoCenter"
