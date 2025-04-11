@@ -1,0 +1,13 @@
+@import "leaflet/dist/leaflet.css";
+@import "tailwindcss";
+
+body {
+  @apply bg-neutral-900;
+  @apply text-white;
+}
+
+body,
+#root,
+#mainContainer {
+  min-height: 100dvh;
+}
