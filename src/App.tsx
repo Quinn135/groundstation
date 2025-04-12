@@ -1,6 +1,7 @@
 "use strict";
 import { useState, useEffect } from "react";
-import "leaflet";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import { Icon } from "leaflet";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import Recenter from "./Recenter";
 
@@ -90,7 +91,16 @@ function App() {
           lng={data.lng}
           autoCenter={autoCenter}
         ></Recenter>
-        <Marker position={[data.lat, data.lng]}></Marker>
+        <Marker
+          position={[data.lat, data.lng]}
+          icon={
+            new Icon({
+              iconUrl: markerIconPng,
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+            })
+          }
+        ></Marker>
       </MapContainer>
       <div className="flex flex-col">
         <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
