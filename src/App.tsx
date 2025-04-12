@@ -1,5 +1,5 @@
 "use strict";
-import { useState useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import Recenter from "./Recenter";
 
