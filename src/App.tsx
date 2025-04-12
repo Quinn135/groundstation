@@ -102,8 +102,8 @@ function App() {
           }
         ></Marker>
       </MapContainer>
-      <div className="flex flex-col">
-        <div className="flex flex-row flex-wrap items-center justify-between gap-3 p-2">
+      <div className="flex flex-row flex-wrap justify-between">
+        <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
             {data.alt.toFixed(2)}ft
           </p>
@@ -129,7 +129,7 @@ function App() {
           </p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
         </div>
-        <div className="flex flex-row flex-wrap items-center justify-end gap-3 p-2">
+        <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
           <button
             className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
             onClick={() => {
