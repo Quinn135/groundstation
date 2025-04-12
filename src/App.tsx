@@ -77,6 +77,7 @@ function App() {
       <MapContainer
         center={[data.lat, data.lng]}
         zoom={14}
+        maxZoom={20}
         scrollWheelZoom={true}
         className="grow"
       >
@@ -105,7 +106,7 @@ function App() {
       <div className="flex flex-row flex-wrap justify-between">
         <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
-            {data.alt.toFixed(2)}ft
+            {data.alt.toFixed(2)}m
           </p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
             {data.mps.toFixed(2)}m/s
