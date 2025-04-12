@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 "use strict";
-import { useState, useRef, useEffect } from "react";
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { useState, useEffect } from "react";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import Recenter from "./Recenter";
 
 function App() {
@@ -21,9 +23,11 @@ function App() {
   useEffect(() => {
     var port = null;
 
+    // @ts-ignore
     document
       .getElementById("connectButton")
       .addEventListener("click", async () => {
+        // @ts-ignore
         port = await navigator.serial.requestPort(); // Requests the port to connect to!
 
         try {
