@@ -13,6 +13,7 @@ function App() {
     mps: 0,
     time: 2411600, // HHMMSSCC
     sats: 0,
+    rssi: -999,
   });
   const [autoCenter, setAutoCenter] = useState(true);
   const [mapUrl, setMapUrl] = useState(
