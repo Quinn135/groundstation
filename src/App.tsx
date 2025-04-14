@@ -129,7 +129,8 @@ function App() {
             our time)
           </p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
-        </div>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.rssi}dB RSSI</p>
+          </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
           <button
             className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
