@@ -61,6 +61,16 @@ function App() {
 
                   setData(JSONData);
 
+                  // Make the update circle turn red temporarily
+                  document.getElementById(
+                    "updateCircle"
+                  )!.style.backgroundColor = "oklch(57.7% 0.245 27.325)";
+                  setTimeout(() => {
+                    document.getElementById(
+                      "updateCircle"
+                    )!.style.backgroundColor = "oklch(62.3% 0.214 259.815)";
+                  }, 150);
+
                   str = ""; // Reset so that the next line is it's own
                 }
               }
@@ -130,8 +140,15 @@ function App() {
             our time)
           </p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
-          <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.rssi}dB RSSI</p>
-          </div>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">
+            {data.rssi}dB RSSI
+          </p>
+          <div
+            id="updateCircle"
+            className="h-7 w-7 rounded-full border-neutral-700 border-4"
+            style={{ backgroundColor: "oklch(62.3% 0.214 259.815)" }}
+          ></div>
+        </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
           <button
             className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
