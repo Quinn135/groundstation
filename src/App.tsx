@@ -15,7 +15,6 @@ function App() {
     sats: 0,
     rssi: -999,
   });
-  const [lastLatLng, setLastLatLng] = useState({ lat: 0, lng: 0 });
   const [autoCenter, setAutoCenter] = useState(true);
   const [mapUrl, setMapUrl] = useState(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -64,9 +63,6 @@ function App() {
                   console.log(JSONData);
 
                   setData(JSONData);
-                  if (data.lat != 0 && data.lng != 0) {
-                    setLastLatLng({ lat: data.lat, lng: data.lng });
-                  }
 
                   // Make the update circle turn red temporarily
                   document.getElementById(
@@ -93,7 +89,7 @@ function App() {
   return (
     <div className="flex flex-col" id="mainContainer">
       <MapContainer
-        center={[lastLatLng.lat, lastLatLng.lng]}
+        center={[data.lat, data.lng]}
         zoom={14}
         maxZoom={18}
         scrollWheelZoom={true}
@@ -106,12 +102,12 @@ function App() {
           url={mapUrl}
         ></TileLayer>
         <Recenter
-          lat={lastLatLng.lat}
-          lng={lastLatLng.lng}
+          lat={data.lat}
+          lng={data.lng}
           autoCenter={autoCenter}
         ></Recenter>
         <Marker
-          position={[lastLatLng.lat, lastLatLng.lng]}
+          position={[data.lat, data.lng]}
           icon={
             new Icon({
               iconUrl: markerIconPng,
@@ -161,12 +157,7 @@ function App() {
             className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
             target="_blank"
             rel="noopener noreferrer"
-            href={
-              "https://maps.google.com/?q=" +
-              lastLatLng.lat +
-              "," +
-              lastLatLng.lng
-            }
+            href={"https://maps.google.com/?q=" + data.lat + "," + data.lng}
           >
             <div className="flex flex-row flex-nowrap items-center">
               <img
