@@ -146,6 +146,8 @@ function App() {
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
             {data.rssi}dB RSSI
           </p>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">Lat: {data.lat}</p>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">Lng: {data.lat}</p>
           <div
             id="updateCircle"
             className="h-7 w-7 rounded-full border-neutral-700 border-4"
