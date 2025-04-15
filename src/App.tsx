@@ -15,11 +15,15 @@ function App() {
     sats: 0,
     rssi: -999,
   });
+  const [lastLatLng, setLastLatLng] = useState({ lat: 0, lng: 0 });
   const [autoCenter, setAutoCenter] = useState(true);
   const [mapUrl, setMapUrl] = useState(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   );
   // http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png
+  // or
+  // https://api.maptiler.com/maps/satellite/{z}/{x}/{y}@2x.jpg?key=cwM7gTGywNuhN01Cqm4T
+  // ?
 
   useEffect(() => {
     var port = null;
@@ -60,6 +64,9 @@ function App() {
                   console.log(JSONData);
 
                   setData(JSONData);
+                  if (data.lat != 0 && data.lng != 0) {
+                    setLastLatLng({ lat: data.lat, lng: data.lng });
+                  }
 
                   // Make the update circle turn red temporarily
                   document.getElementById(
@@ -86,9 +93,9 @@ function App() {
   return (
     <div className="flex flex-col" id="mainContainer">
       <MapContainer
-        center={[data.lat, data.lng]}
+        center={[lastLatLng.lat, lastLatLng.lng]}
         zoom={14}
-        maxZoom={20}
+        maxZoom={18}
         scrollWheelZoom={true}
         className="grow"
       >
@@ -99,12 +106,12 @@ function App() {
           url={mapUrl}
         ></TileLayer>
         <Recenter
-          lat={data.lat}
-          lng={data.lng}
+          lat={lastLatLng.lat}
+          lng={lastLatLng.lng}
           autoCenter={autoCenter}
         ></Recenter>
         <Marker
-          position={[data.lat, data.lng]}
+          position={[lastLatLng.lat, lastLatLng.lng]}
           icon={
             new Icon({
               iconUrl: markerIconPng,
@@ -150,6 +157,26 @@ function App() {
           ></div>
         </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-3 p-2">
+          <a
+            className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={
+              "https://maps.google.com/?q=" +
+              lastLatLng.lat +
+              "," +
+              lastLatLng.lng
+            }
+          >
+            <div className="flex flex-row flex-nowrap items-center">
+              <img
+                src="/google-maps.png"
+                alt="Google Maps"
+                className="h-5 pr-1.5"
+              />
+              <p>Maps</p>
+            </div>
+          </a>
           <button
             className="cursor-pointer bg-neutral-800 p-1 px-2.5 rounded active:bg-neutral-700"
             onClick={() => {
@@ -159,6 +186,9 @@ function App() {
                 setMapUrl(
                   "http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png"
                 );
+                // setMapUrl(
+                //   "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}@2x.jpg?key=cwM7gTGywNuhN01Cqm4T"
+                // );
               } else {
                 setMapUrl("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
               }
