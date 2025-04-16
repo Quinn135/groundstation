@@ -20,9 +20,6 @@ function App() {
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   );
   // http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png
-  // or
-  // https://api.maptiler.com/maps/satellite/{z}/{x}/{y}@2x.jpg?key=cwM7gTGywNuhN01Cqm4T
-  // ?
 
   useEffect(() => {
     var port = null;
@@ -172,12 +169,12 @@ function App() {
               .slice(-4, -2)}`}{" "}
             our time)
           </p>
-          <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
             {data.rssi}dB RSSI
           </p>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">Lat: {data.lat}</p>
-          <p className="bg-neutral-800 p-1 px-2.5 rounded">Lng: {data.lat}</p>
+          <p className="bg-neutral-800 p-1 px-2.5 rounded">Lng: {data.lng}</p>
           <div
             id="updateCircle"
             className="h-7 w-7 rounded-full border-neutral-700 border-4"
@@ -209,9 +206,6 @@ function App() {
                 setMapUrl(
                   "http://services.arcgisonline.com/ArcGis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png"
                 );
-                // setMapUrl(
-                //   "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}@2x.jpg?key=cwM7gTGywNuhN01Cqm4T"
-                // );
               } else {
                 setMapUrl("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
               }
