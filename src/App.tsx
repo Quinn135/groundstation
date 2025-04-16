@@ -11,7 +11,7 @@ function App() {
     lat: 0,
     lng: 0,
     mps: 0,
-    time: 2411600, // HHMMSSCC
+    time: 0, // HHMMSSCC
     sats: 0,
     rssi: -999,
   });
@@ -30,6 +30,7 @@ function App() {
     document
       .getElementById("connectButton")!
       .addEventListener("click", async () => {
+        var high = false;
         // @ts-ignore
         port = await navigator.serial.requestPort(); // Requests the port to connect to! (yes it works)
 
@@ -59,20 +60,49 @@ function App() {
 
                 if (str.endsWith("\n")) {
                   // New Line, so read data
-                  var JSONData = JSON.parse(str); // Should result in the JSON for it
-                  console.log(JSONData);
+                  var JSONData = {
+                    alt: -1,
+                    lat: -1,
+                    lng: -1,
+                    mps: -1,
+                    time: -1, // HHMMSSCC
+                    sats: -1,
+                    rssi: -1,
+                  };
 
-                  setData(JSONData);
+                  try {
+                    JSONData = JSON.parse(str); // Should result in the JSON for it
+                    console.log(JSONData);
+
+                    setData({
+                      alt: Number(JSONData.alt),
+                      lat: Number(JSONData.lat),
+                      lng: Number(JSONData.lng),
+                      mps: Number(JSONData.mps),
+                      time: Number(JSONData.time), // HHMMSSCC
+                      sats: Number(JSONData.sats),
+                      rssi: Number(JSONData.rssi),
+                    });
+                  } catch (error) {
+                    console.log(error);
+
+                    document.getElementById(
+                      "updateCircle"
+                    )!.style.backgroundColor = "hsl(0, 100%, 50%)";
+                  }
 
                   // Make the update circle turn red temporarily
-                  document.getElementById(
-                    "updateCircle"
-                  )!.style.backgroundColor = "oklch(57.7% 0.245 27.325)";
-                  setTimeout(() => {
+
+                  if (high) {
                     document.getElementById(
                       "updateCircle"
                     )!.style.backgroundColor = "oklch(62.3% 0.214 259.815)";
-                  }, 150);
+                  } else {
+                    document.getElementById(
+                      "updateCircle"
+                    )!.style.backgroundColor = "hsl(57, 100%, 50%)";
+                  }
+                  high = !high;
 
                   str = ""; // Reset so that the next line is it's own
                 }
