@@ -117,8 +117,8 @@ function App() {
     <div className="flex flex-col" id="mainContainer">
       <MapContainer
         center={[data.lat, data.lng]}
-        zoom={14}
-        maxZoom={18}
+        zoom={15}
+        maxZoom={21}
         scrollWheelZoom={true}
         className="grow"
       >
@@ -126,6 +126,8 @@ function App() {
           attribution={
             "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
           }
+          maxNativeZoom={18}
+          maxZoom={22}
           url={mapUrl}
         ></TileLayer>
         <Recenter
