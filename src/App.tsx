@@ -23,6 +23,15 @@ function App() {
 
   useEffect(() => {
     var port = null;
+    var JSONData = {
+      alt: -1,
+      lat: -1,
+      lng: -1,
+      mps: -1,
+      time: -1, // HHMMSSCC
+      sats: -1,
+      rssi: -1,
+    };
 
     document
       .getElementById("connectButton")!
@@ -57,7 +66,7 @@ function App() {
 
                 if (str.endsWith("\n")) {
                   // New Line, so read data
-                  var JSONData = {
+                  JSONData = {
                     alt: -1,
                     lat: -1,
                     lng: -1,
@@ -174,7 +183,12 @@ function App() {
           <p className="bg-neutral-800 p-1 px-2.5 rounded">
             {data.rssi}dB RSSI
           </p>
-          <p className="bg-neutral-800 p-1 px-2.5 rounded">{data.sats} Sats</p>
+          <p
+            className="bg-neutral-800 p-1 px-2.5 rounded"
+            style={{ background: data.sats == 0 ? "red" : "oklch(26.9% 0 0)" }}
+          >
+            {data.sats} Sats
+          </p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">Lat: {data.lat}</p>
           <p className="bg-neutral-800 p-1 px-2.5 rounded">Lng: {data.lng}</p>
           <div
