@@ -52,70 +52,140 @@ function App() {
             const reader = await port.readable.getReader();
             var str = "";
 
-            reader.read().then(function pump({ done, value }: any) {
-              if (done) {
-                return;
-              }
+            // reader.read().then(function pump({ done, value }: any) {
+            //   if (done) {
+            //     return;
+            //   }
 
-              // Make sure we're not starting in the middle of a transfer
-              if (
-                (str == "" && String.fromCharCode(...value).startsWith("{")) ||
-                str != ""
-              ) {
-                str += String.fromCharCode(...value);
+            //   // Make sure we're not starting in the middle of a transfer
+            //   if (
+            //     (str == "" && String.fromCharCode(...value).startsWith("{")) ||
+            //     str != ""
+            //   ) {
+            //     str += String.fromCharCode(...value);
 
-                if (str.endsWith("\n")) {
-                  // New Line, so read data
-                  JSONData = {
-                    alt: -1,
-                    lat: -1,
-                    lng: -1,
-                    mps: -1,
-                    time: -1, // HHMMSSCC
-                    sats: -1,
-                    rssi: -1,
-                  };
+            //     if (str.endsWith("\n")) {
+            //       // New Line, so read data
+            //       JSONData = {
+            //         alt: -1,
+            //         lat: -1,
+            //         lng: -1,
+            //         mps: -1,
+            //         time: -1, // HHMMSSCC
+            //         sats: -1,
+            //         rssi: -1,
+            //       };
 
-                  try {
-                    JSONData = JSON.parse(str); // Should result in the JSON for it
-                    console.log(JSONData);
+            //       try {
+            //         JSONData = JSON.parse(str); // Should result in the JSON for it
+            //         console.log(JSONData);
 
-                    setData({
-                      alt: Number(JSONData.alt),
-                      lat: Number(JSONData.lat),
-                      lng: Number(JSONData.lng),
-                      mps: Number(JSONData.mps),
-                      time: Number(JSONData.time), // HHMMSSCC
-                      sats: Number(JSONData.sats),
-                      rssi: Number(JSONData.rssi),
-                    });
-                  } catch (error) {
-                    console.log(error);
+            //         setData({
+            //           alt: Number(JSONData.alt),
+            //           lat: Number(JSONData.lat),
+            //           lng: Number(JSONData.lng),
+            //           mps: Number(JSONData.mps),
+            //           time: Number(JSONData.time), // HHMMSSCC
+            //           sats: Number(JSONData.sats),
+            //           rssi: Number(JSONData.rssi),
+            //         });
+            //       } catch (error) {
+            //         console.log(error);
 
-                    document.getElementById(
-                      "updateCircle"
-                    )!.style.backgroundColor = "hsl(0, 100%, 50%)";
+            //         document.getElementById(
+            //           "updateCircle"
+            //         )!.style.backgroundColor = "hsl(0, 100%, 50%)";
+            //       }
+
+            //       // Make the update circle turn red temporarily
+
+            //       if (high) {
+            //         document.getElementById(
+            //           "updateCircle"
+            //         )!.style.backgroundColor = "oklch(62.3% 0.214 259.815)";
+            //       } else {
+            //         document.getElementById(
+            //           "updateCircle"
+            //         )!.style.backgroundColor = "hsl(57, 100%, 50%)";
+            //       }
+            //       high = !high;
+
+            //       str = ""; // Reset so that the next line is it's own
+            //     }
+            //   }
+
+            //   return reader.read().then(pump);
+            // });
+
+            (async function readLoop() {
+              try {
+                while (true) {
+                  const { value, done } = await reader.read();
+                  if (done) break;
+
+                  if (
+                    (str == "" &&
+                      String.fromCharCode(...value).startsWith("{")) ||
+                    str != ""
+                  ) {
+                    str += String.fromCharCode(...value);
+
+                    if (str.endsWith("\n")) {
+                      // New Line, so read data
+                      JSONData = {
+                        alt: -1,
+                        lat: -1,
+                        lng: -1,
+                        mps: -1,
+                        time: -1, // HHMMSSCC
+                        sats: -1,
+                        rssi: -1,
+                      };
+
+                      try {
+                        JSONData = JSON.parse(str); // Should result in the JSON for it
+                        console.log(JSONData);
+
+                        setData({
+                          alt: Number(JSONData.alt),
+                          lat: Number(JSONData.lat),
+                          lng: Number(JSONData.lng),
+                          mps: Number(JSONData.mps),
+                          time: Number(JSONData.time), // HHMMSSCC
+                          sats: Number(JSONData.sats),
+                          rssi: Number(JSONData.rssi),
+                        });
+                      } catch (error) {
+                        console.log(error);
+
+                        document.getElementById(
+                          "updateCircle"
+                        )!.style.backgroundColor = "hsl(0, 100%, 50%)";
+                      }
+
+                      // Make the update circle turn red temporarily
+
+                      if (high) {
+                        document.getElementById(
+                          "updateCircle"
+                        )!.style.backgroundColor = "oklch(62.3% 0.214 259.815)";
+                      } else {
+                        document.getElementById(
+                          "updateCircle"
+                        )!.style.backgroundColor = "hsl(57, 100%, 50%)";
+                      }
+                      high = !high;
+
+                      str = ""; // Reset so that the next line is it's own
+                    }
                   }
-
-                  // Make the update circle turn red temporarily
-
-                  if (high) {
-                    document.getElementById(
-                      "updateCircle"
-                    )!.style.backgroundColor = "oklch(62.3% 0.214 259.815)";
-                  } else {
-                    document.getElementById(
-                      "updateCircle"
-                    )!.style.backgroundColor = "hsl(57, 100%, 50%)";
-                  }
-                  high = !high;
-
-                  str = ""; // Reset so that the next line is it's own
                 }
+              } catch (err) {
+                console.error(err);
+              } finally {
+                reader.releaseLock();
               }
-
-              return reader.read().then(pump);
-            });
+            })();
           }
         }
         // https://developer.mozilla.org/en-US/docs/Web/API/SerialPort
